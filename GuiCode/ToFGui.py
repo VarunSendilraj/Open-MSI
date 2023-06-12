@@ -190,7 +190,7 @@ def main():
     root.title("Mass Spectrometry Image GUI")
 
     # Load and display the initial image
-    image = Image.open('MSI_image.bmp')
+    image = Image.new('RGB', (400, 400), color='white')
     image = image.resize((400, 400), Image.ANTIALIAS)
     img_tk = ImageTk.PhotoImage(image)
     image_label = tk.Label(root, image=img_tk)
