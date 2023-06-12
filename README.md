@@ -22,7 +22,7 @@ pip install tkinter pillow opencv-python matplotlib
 ## Usage
 1. Run the Python script using the following command:
 
-    ```python tofms_gui.py```
+    ```python ToFGui.py```
 
 2. The application will open a file selection dialog. Choose the TOF-MS data file (.txt extention) that you want to convert.
 
