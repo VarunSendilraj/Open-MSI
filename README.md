@@ -44,9 +44,7 @@ pip install tkinter pillow opencv-python matplotlib
 
 9. To save the converted image, click the "Save Image" button. Choose a file name and location to save the image as a bitmap file (.bmp).
 
-10. If you want to display the image with a colorbar, check the "Display Colorbar" checkbox. The image will be displayed along with a colorbar indicating the intensity scale. This can be helpful for interpreting the ion intensities in the image.
-
-11. To exit the application, click the "Exit" button or close the window.
+10. To exit the application, click the "Exit" button or close the window.
 
 
 ## Conclusion
