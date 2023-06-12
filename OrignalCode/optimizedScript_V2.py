@@ -137,7 +137,7 @@ def display_image_with_colorbar(reshaped_data):
 
 def main():
     # Specify input data and parameters
-    IMS_data = '230111_caffeini_3_195_1.txt'
+    IMS_data = 'ToFData\\230111_caffeini_3_195_1.txt'
     AbrationTime = 0.05054
     StartTime = 1.0
     Noise = 50
