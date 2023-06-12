@@ -6,8 +6,12 @@ Time of Flight Mass Spectrometry is a technique used in analytical chemistry to 
 
 Converting TOF-MS data into an image format is useful for visualization and further analysis of the data. It allows researchers to observe patterns and trends in the ion intensity across different mass and time values, which can provide insights into the composition and structure of the analyzed sample.
 
+## Application Instllation
+1. Download the TOF-MS Data to Image Conversion GUI executable file (.exe) from ./dist folder.
+2. Save the .exe file to a directory on your computer.
+3. Click on application to Run (does include a loading time with black terminal)
 
-## Installation
+## Code Installation
 1. Ensure that you have Python installed on your system. This code was developed using Python 3.9, but it should work with other Python 3 versions as well.
 
 2. Install the required dependencies by running the following command:
