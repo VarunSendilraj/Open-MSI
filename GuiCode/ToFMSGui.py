@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from tkinter import filedialog
 import subprocess
 import os
+import ipywidgets as widgets
+from IPython.display import display
 
 
 
@@ -492,11 +494,76 @@ def main():
         # Button to save the image with the entered values
         save_button = tk.Button(input_window, text="Save", command=save_image_with_input)
         save_button.grid(row=8, columnspan=2, pady=10)
+        
+        
+    def generate_3d_plot():
+        ablation_time_entry_value = ablation_entry.get()
+        if ablation_time_entry_value:
+            try:
+                ablation_time = float(ablation_time_entry_value)
+            except ValueError:
+                print("Invalid ablation time value.")
+                return
+        else:
+            ablation_time = ablation_time_slider.get()
+        noise_value = noise_slider.get()
+        start_time = float(start_time_entry.get())
 
 
+        # Generate the filename based on the selected ablation time, noise, and start time
+        data = read_data_file(IMS_data)
+
+        # Step 2: Preprocess the data
+        preprocessed_data = preprocess_data(data)
+
+        # Step 3: Collect data for each ablation time interval
+        collected_data = collect_data_by_ablation_time(preprocessed_data, start_time, ablation_time)
+
+        # Step 4: Subtract background noise and calculate intensities
+        intensities = subtract_background_noise(collected_data, noise_value)
+
+        # Step 5: Scale and perform logarithmic transformation
+        scaled_intensities = scale_and_log_transform(intensities, AbrationTimes)
+
+        # Step 6: Reshape the data for visualization
+        reshaped_data = reshape_data_for_visualization(scaled_intensities, Length)
+
+        # Step 7: Reverse alternate rows
+        reversed_data = reverse_alternate_rows(reshaped_data)
+        """
+        Visualize the mass spectrometry data in 3D.
+        """
+        x, y = np.meshgrid(range(len(reversed_data)), range(len(reversed_data[0])))
+        z = np.array(reversed_data)
+
+        # Step 9: Visualize the mass spectrometry data in 3D
+        data = np.stack((x, y, z), axis=-1).reshape(-1, 3)
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        x = []
+        y = []
+        z = []
+
+        for point in data:
+            x.append(point[0])
+            y.append(point[1])
+            z.append(point[2])
+
+        scatter = ax.scatter(x, y, z, c=z, cmap='jet')
+        colorbar = plt.colorbar(scatter, pad=0.05, shrink=0.5, aspect=10)
+
+        ax.set_xlabel('X (mm)')
+        ax.set_ylabel('Y (mm)')
+        ax.set_zlabel('Intensity')
+        
+        plt.show()
 
 
-
+    generate_plot_button = tk.Button(root, text="Generate 3D Plot", command=generate_3d_plot)
+    generate_plot_button.pack(pady=10)
+    
+    
     save_image_button = tk.Button(root, text="Save as .bmp", command=save_image_handler)
     save_image_button.pack(pady=(3, 10))
     
