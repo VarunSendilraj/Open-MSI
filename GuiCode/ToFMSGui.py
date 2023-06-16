@@ -237,6 +237,7 @@ def main():
     image_label = tk.Label(root, image=img_tk)
     image_label.pack(pady=10)
 
+
     def update_image(event=None):
         """
         Update the image based on the selected method for updating the ablation time.
@@ -288,6 +289,7 @@ def main():
 
         # Update the label text
         label_text.set(f"Ablation Time: {ablation_time:.5f} s  |  Noise: {noise_value}  |  Start Time: {start_time}")
+    
 
     
     # Slider to adjust the ablation time
@@ -308,11 +310,11 @@ def main():
     ablation_entry = tk.Entry(root)
     ablation_entry.insert(0, str(AbrationTime))
     ablation_entry.bind("<Return>", update_image)
-    ablation_entry.pack(pady=(2,10))
+    ablation_entry.pack()
     
     # Slider for adjusting the noise
     noise_label = tk.Label(root, text="Noise Reduction:")
-    noise_label.pack(pady=(5,1))
+    noise_label.pack()
     noise_slider = tk.Scale(root, from_=0, to=100, length=350, orient=tk.HORIZONTAL, resolution=1, command=update_image)
     noise_slider.pack()
      # Entry box for entering the start time
@@ -322,9 +324,6 @@ def main():
     start_time_entry.insert(0, str(StartTime))
     start_time_entry.bind("<Return>", update_image)
     start_time_entry.pack(pady=(0,15))
-    
-    
-
     
     # Save Image button
     def save_image_handler():
@@ -560,15 +559,19 @@ def main():
         plt.show()
 
 
-    generate_plot_button = tk.Button(root, text="Generate 3D Plot", command=generate_3d_plot)
-    generate_plot_button.pack(pady=10)
-    
-    
-    save_image_button = tk.Button(root, text="Save as .bmp", command=save_image_handler)
-    save_image_button.pack(pady=(3, 10))
-    
-    save_img_button = tk.Button(root, text="Save as Analyze File", command=save_img_handler2)
-    save_img_button.pack(pady=(3, 10))
+    button_frame = tk.Frame(root)
+    button_frame.pack()
+
+    generate_plot_button = tk.Button(button_frame, text="Generate 3D Plot", command=generate_3d_plot)
+    generate_plot_button.grid(row=0, column=0, padx=10, pady=10)
+
+    save_image_button = tk.Button(button_frame, text="Save as .bmp", command=save_image_handler)
+    save_image_button.grid(row=0, column=1, padx=10, pady=10)
+
+    save_img_button = tk.Button(button_frame, text="Save as Analyze File", command=save_img_handler2)
+    save_img_button.grid(row=0, column=2, padx=10, pady=10)
+
+
 
     
 
