@@ -2,45 +2,34 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load the two input images
-overlay_image = cv2.imread('GuiCode\MSI_image.bmp')
+# Assuming generated_image and ground_truth_image have the same dimensions
 
-background_image= cv2.imread('11 1.jpg')
+# Convert the generated_image to grayscale
+generated_image = cv2.imread('MSI_image.bmp')
+generated_image_gray = cv2.cvtColor(generated_image, cv2.COLOR_BGR2GRAY)
 
-# Resize images to have the same dimensions
-height = min(background_image.shape[0], overlay_image.shape[0])
-width = min(background_image.shape[1], overlay_image.shape[1])
-background_image = cv2.resize(background_image, (width, height))
-overlay_image = cv2.resize(overlay_image, (width, height))
+# Normalize the grayscale image to a range between 0 and 255
+generated_image_gray_norm = cv2.normalize(generated_image_gray, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
 
-# Convert images to grayscale
-background_gray = cv2.cvtColor(background_image, cv2.COLOR_BGR2GRAY)
-overlay_gray = cv2.cvtColor(overlay_image, cv2.COLOR_BGR2GRAY)
+# Create a 3-channel grayscale image from the normalized grayscale image
+generated_image_rgb = generated_image
 
-# Apply edge detection to grayscale images
-background_edges = cv2.Canny(background_gray, 100, 200)
-overlay_edges = cv2.Canny(overlay_gray, 100, 200)
+# Resize the ground_truth_image to match the dimensions of generated_image
+ground_truth_image = cv2.imread('11 1.jpg')
+ground_truth_resized = cv2.resize(ground_truth_image, (generated_image.shape[1], generated_image.shape[0]))
 
-# Create a mask by thresholding the edge images
-_, background_mask = cv2.threshold(background_edges, 100, 255, cv2.THRESH_BINARY)
-_, overlay_mask = cv2.threshold(overlay_edges, 100, 255, cv2.THRESH_BINARY)
+# Convert the ground_truth_image to grayscale
+ground_truth_gray = cv2.cvtColor(ground_truth_resized, cv2.COLOR_BGR2GRAY)
 
-# Dilate the mask to ensure a smoother transition
-kernel = np.ones((5, 5), np.uint8)
-background_mask = cv2.dilate(background_mask, kernel, iterations=1)
-overlay_mask = cv2.dilate(overlay_mask, kernel, iterations=1)
+# Convert the ground_truth_image to a 3-channel grayscale image
+ground_truth_rgb = cv2.cvtColor(ground_truth_gray, cv2.COLOR_GRAY2BGR)
 
-# Create copies of the original images
-background_copy = background_image.copy()
-overlay_copy = overlay_image.copy()
+# Set the opacity of the ground_truth_rgb image (0.5 for 50% opacity, adjust as needed)
+opacity = 0.5
 
-# Apply the mask to the overlay image
-overlay_copy[overlay_mask != 0] = 0
-
-# Add the masked overlay image to the background image
-result = cv2.add(background_copy, overlay_copy)
+# Overlay the ground_truth_rgb image onto the generated_image_rgb
+overlay = cv2.addWeighted(ground_truth_rgb, 1 - opacity, generated_image_rgb, opacity, 0)
 
 # Display the result
-plt.imshow(cv2.cvtColor(result, cv2.COLOR_BGR2RGB))
-plt.axis('off')
+plt.imshow(overlay, cmap="jet")
 plt.show()

@@ -2,6 +2,10 @@ import cv2
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from PIL import Image
 
 
 def read_data_file(filename):
@@ -25,7 +29,8 @@ def preprocess_data(data):
         preprocessed_data.append(line)
     return preprocessed_data
 
-#Mass Alignment between to provide accurate representation of chemical 
+
+# Mass Alignment between to provide accurate representation of chemical
 def collect_data_by_ablation_time(preprocessed_data, start_time, ablation_time):
     """
     Collect data for each ablation time interval.
@@ -33,7 +38,7 @@ def collect_data_by_ablation_time(preprocessed_data, start_time, ablation_time):
     collected_data = []
     current_time = start_time
     current_interval_data = []
-    
+
     for line in preprocessed_data:
         if line[0] < current_time:
             continue
@@ -44,38 +49,41 @@ def collect_data_by_ablation_time(preprocessed_data, start_time, ablation_time):
             collected_data.append(current_interval_data)
             current_time += ablation_time
             current_interval_data = []
-    
+
     return collected_data
 
-#peak picking  --> Being able to increase the singal to noise ratio while preserving all improtatnt features
+
+# peak picking  --> Being able to increase the singal to noise ratio while preserving all important features
 def subtract_background_noise(collected_data, noise):
     """
     Subtract background noise and calculate the sum of intensities for each interval.
     """
     intensities = []
     interval_intensity = 0
-    
+
     for interval in collected_data:
         for line in interval:
             intensity = max(line[1] - noise, 0)
             interval_intensity += intensity
         intensities.append(interval_intensity)
         interval_intensity = 0
-    
+
     return intensities
 
-#implement the threee steps of noise reduction here, 
+
+# implement the three steps of noise reduction here,
+
 
 def scale_and_log_transform(intensities, ablation_times):
     """
     Scale and perform logarithmic transformation on the intensities.
     """
     scaled_intensities = np.zeros(ablation_times)
-    
+
     for i in range(min(len(scaled_intensities), len(intensities))):
         if intensities[i] > 0:
             scaled_intensities[i] = math.log(intensities[i], 10)
-    
+
     return scaled_intensities
 
 
@@ -84,10 +92,10 @@ def reshape_data_for_visualization(scaled_intensities, length):
     Reshape the data for image visualization.
     """
     reshaped_data = []
-    
+
     for i in range(0, len(scaled_intensities), length):
         reshaped_data.append(scaled_intensities[i:i + length])
-    
+
     return reshaped_data
 
 
@@ -96,16 +104,31 @@ def reverse_alternate_rows(reshaped_data):
     Reverse alternate rows in the reshaped data.
     """
     reversed_data = []
-    
+
     for i in range(len(reshaped_data)):
         if i % 2 == 0:
             reversed_data.append(reshaped_data[i])
         else:
             reversed_data.append(reshaped_data[i][::-1])
-    
+
     return reversed_data
+from matplotlib.colors import LinearSegmentedColormap
 
 
+def transparent_colormap(existing_cmap_name = 'jet'):
+    ncolors = 256
+    color_array = plt.get_cmap(existing_cmap_name)(range(ncolors))
+
+    # change alpha value of first color
+    color_array[0,-1] = 0.0
+
+    # create a colormap object
+    new_cmap = LinearSegmentedColormap.from_list(name=f'{existing_cmap_name}_alpha', colors=color_array)
+
+    # register this new colormap with matplotlib
+    plt.register_cmap(cmap=new_cmap)
+    
+    return new_cmap
 
 
 def save_image(reshaped_data, filename):
@@ -113,14 +136,10 @@ def save_image(reshaped_data, filename):
     Save the mass spectrometry image as an image file.
     """
     image = np.array(reshaped_data)
-    #everything below until plt.imsave is code to save it as a .img file
-    #image_array = image.astype(np.uint8)
+    new_cmap = transparent_colormap()
+    plt.imsave(filename, image, cmap=new_cmap)
 
-    # Save the image array as a binary file with .img extension
-    #with open(filename, 'wb') as file:
-    #    file.write(image_array.tobytes())
-    
-    plt.imsave(filename, image, cmap="jet")
+
 
 
 def display_image_with_colorbar(reshaped_data):
@@ -133,6 +152,26 @@ def display_image_with_colorbar(reshaped_data):
     plt.xticks([0, 25, 50, 75, 100], [0, 1, 2, 3, "4\nmm"], fontsize=20)
     plt.yticks([0, 25, 50, 75, 100], ["4\nmm", 3, 2, 1, 0], fontsize=20)
     plt.show()
+
+
+def perform_kmeans_clustering(reshaped_data, num_clusters):
+    """
+    Perform k-means clustering on the reshaped data.
+    """
+    flattened_data = np.array(reshaped_data).flatten()
+    kmeans = KMeans(n_clusters=num_clusters)
+    kmeans.fit(flattened_data.reshape(-1, 1))
+    cluster_labels = kmeans.labels_
+    return cluster_labels
+
+def perform_pca(data):
+    # Initialize PCA with desired number of components
+    pca = PCA(n_components=2)
+    
+    # Perform PCA on the data
+    pca_data = pca.fit_transform(data)
+    
+    return pca_data
 
 
 def main():
@@ -158,12 +197,30 @@ def main():
 
     # Step 5: Scale and perform logarithmic transformation
     scaled_intensities = scale_and_log_transform(intensities, AbrationTimes)
+    
+    # Perform PCA on the scaled intensities
+    #pca_data = perform_pca(np.resscaled_intensities)
 
     # Step 6: Reshape the data for visualization
     reshaped_data = reshape_data_for_visualization(scaled_intensities, Length)
 
     # Step 7: Reverse alternate rows
     reversed_data = reverse_alternate_rows(reshaped_data)
+
+
+    # Perform k-means clustering on the reshaped data
+    cluster_labels = perform_kmeans_clustering(reversed_data, 100)
+
+    # Generate x and y coordinate arrays based on the shape of reversed_data
+    x, y = np.meshgrid(np.arange(len(reversed_data[0])), np.arange(len(reversed_data)))
+
+    # Plot K-means clustering results
+    plt.scatter(x.flatten(), y.flatten(), c=cluster_labels, cmap='jet')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('K-means Clustering Results')
+    plt.colorbar(label='Cluster Labels')
+    plt.show()
 
     # Step 8: Save the mass spectrometry image
     save_image(reversed_data, 'MSI_image.bmp')
