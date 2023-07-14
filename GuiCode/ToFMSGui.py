@@ -361,7 +361,7 @@ def main():
 
     # Load and display the initial image
     image = Image.new('RGB', (400, 400), color='white')
-    image = image.resize((400, 400), Image.ANTIALIAS)
+    image = image.resize((400, 400), Image.LANCZOS)
     img_tk = ImageTk.PhotoImage(image)
     image_label = tk.Label(root, image=img_tk)
     image_label.pack(pady=10)
@@ -412,7 +412,7 @@ def main():
 
         # Update the image in the GUI
         new_image = Image.open('MSI_image.bmp')
-        new_image = new_image.resize((400, 400), Image.ANTIALIAS)
+        new_image = new_image.resize((400, 400), Image.LANCZOS)
         new_img_tk = ImageTk.PhotoImage(new_image)
         image_label.configure(image=new_img_tk)
         image_label.image = new_img_tk
