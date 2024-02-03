@@ -1,6 +1,8 @@
 # OPEN-MSI: Time of Flight Mass Spectrometry Data to Image Conversion GUI
 This is a Python GUI application that converts Time of Flight Mass Spectrometry (TOF-MS) data into image data. The application allows users to interactively find the optimal mass alignment value, noise value, and start time for the conversion process. The converted image can be saved or displayed with a colorbar.
 
+<img width="979" alt="image" src="https://github.com/VarunSendilraj/MassSpecProj/assets/57602146/4caffe80-6d67-4137-87ab-9ef1affc2a3e">
+
 ## Background
 Time of Flight Mass Spectrometry is a technique used in analytical chemistry to measure the mass-to-charge ratio of ions. It involves ionizing a sample, accelerating the ions into a flight tube, and measuring the time it takes for each ion to reach a detector. The resulting data is typically represented as a two-dimensional matrix, with the x-axis representing the time of flight and the y-axis representing the mass-to-charge ratio.
 
