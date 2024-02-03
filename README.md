@@ -1,6 +1,6 @@
 # OPEN-MSI: Open-Source GUI tool for Personalized Visualization and Streamlined Analysis of Mass Spectrometry Data
 
-This is a Python GUI application that converts Time of Flight Mass Spectrometry (TOF-MS) data into image data. The application allows users to interactively find the optimal mass alignment value, noise value, and start time for the conversion process. The converted image can be saved or displayed with a colorbar.
+This is a Python GUI application that converts Time of Flight Mass Spectrometry (TOF-MS) data into image data. The application allows users to interactively find the optimal mass alignment value, noise value, and start time for the conversion process. The converted image can be saved or displayed with a colorbar and analyzed with CV and ML algorithms.
 
 <img width="977" alt="image" src="https://github.com/VarunSendilraj/Open-MSI/assets/57602146/bb355e20-7c51-4449-9d5f-2062123b1989">
 
