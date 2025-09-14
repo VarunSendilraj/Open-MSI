@@ -1,55 +1,139 @@
-# OPEN-MSI: Open-Source GUI tool for Personalized Visualization and Streamlined Analysis of Mass Spectrometry Data
+# Open-MSI
 
-This is a Python GUI application that converts Time of Flight Mass Spectrometry (TOF-MS) data into image data. The application allows users to interactively find the optimal mass alignment value, noise value, and start time for the conversion process. The converted image can be saved or displayed with a colorbar and analyzed with CV and ML algorithms.
+**Open-Source GUI Tool for Personalized Visualization and Streamlined Analysis of Mass Spectrometry Data**
 
-<img width="977" alt="image" src="https://github.com/VarunSendilraj/Open-MSI/assets/57602146/bb355e20-7c51-4449-9d5f-2062123b1989">
+[![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 
+Open-MSI is a Python-based GUI application that converts Time of Flight Mass Spectrometry (TOF-MS) data into image data for visualization and analysis. The application provides an interactive interface for optimizing mass alignment values, noise parameters, and start times to enhance data interpretation through computer vision and machine learning algorithms.
+
+![Open-MSI Interface](https://github.com/VarunSendilraj/Open-MSI/assets/57602146/bb355e20-7c51-4449-9d5f-2062123b1989)
+
+## Features
+
+- **Interactive Parameter Tuning**: Real-time adjustment of mass alignment, noise reduction, and ablation time parameters
+- **Multiple Visualization Modes**: Standard imaging, heatmaps, 3D visualization, and clustering analysis
+- **Data Export**: Save processed images in various formats (BMP, PNG, etc.)
+- **Machine Learning Integration**: Built-in clustering and pattern recognition capabilities
+- **User-Friendly Interface**: Intuitive GUI with sliders and real-time preview
 
 ## Background
-Time of Flight Mass Spectrometry is a technique used in analytical chemistry to measure the mass-to-charge ratio of ions. It involves ionizing a sample, accelerating the ions into a flight tube, and measuring the time it takes for each ion to reach a detector. The resulting data is typically represented as a two-dimensional matrix, with the x-axis representing the time of flight and the y-axis representing the mass-to-charge ratio.
 
-Converting TOF-MS data into an image format is useful for visualization and further analysis of the data. It allows researchers to observe patterns and trends in the ion intensity across different mass and time values, which can provide insights into the composition and structure of the analyzed sample.
+Time of Flight Mass Spectrometry (TOF-MS) is an analytical technique that measures the mass-to-charge ratio of ions by measuring their flight time through a drift region. The resulting data forms a two-dimensional matrix where:
+- **X-axis**: Time of flight
+- **Y-axis**: Mass-to-charge ratio (m/z)
+- **Intensity**: Ion abundance at each time/mass coordinate
 
-## Application Instllation
-1. Download the TOF-MS Data to Image Conversion GUI executable file (.exe) from ./dist folder.
-2. Save the .exe file to a directory on your computer.
-3. Click on application to Run (does include a loading time with black terminal)
+Converting this data to image format enables advanced visualization and analysis techniques, helping researchers identify patterns, structures, and compositions in their samples.
 
-## Code Installation
-1. Ensure that you have Python installed on your system. This code was developed using Python 3.9, but it should work with other Python 3 versions as well.
+## Installation
 
-2. Install the required dependencies by running the following command:
+### Option 1: Binary Distribution
+1. Download the pre-built executable from the [releases page](../../releases)
+2. Extract and run the application directly (no installation required)
 
+### Option 2: From Source
+
+**Prerequisites:**
+- Python 3.7 or higher
+- Git (for cloning the repository)
+
+**Installation Steps:**
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/VarunSendilraj/Open-MSI.git
+   cd Open-MSI
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the application:**
+   ```bash
+   python src/GuiCode/ToFMSGui.py
+   ```
+
+## Quick Start
+
+1. **Launch the application** using one of the installation methods above
+2. **Load your data** by clicking "Open File" and selecting a TOF-MS data file (`.txt` format)
+3. **Adjust parameters** using the interactive sliders:
+   - **Ablation Time**: Controls the time interval for data collection
+   - **Mass Alignment**: Aligns peaks for improved accuracy
+   - **Noise Threshold**: Reduces background noise for clearer images
+4. **Preview changes** in real-time as you modify parameters
+5. **Save your results** by clicking "Save Image"
+
+## Project Structure
 
 ```
-pip install tkinter pillow opencv-python matplotlib
+Open-MSI/
+├── src/                          # Source code
+│   ├── GuiCode/                  # Main GUI application
+│   └── fileFormatting/           # Data formatting utilities
+├── visualization/                # Additional visualization tools
+│   └── AdditionalVisualizationTechniques/
+├── examples/                     # Sample data and outputs
+│   ├── data/                     # Sample TOF-MS datasets
+│   ├── outputs/                  # GUI-generated results
+│   └── sample_outputs/           # Reference outputs
+├── legacy/                       # Original code (for reference)
+│   └── OriginalCode/
+├── docs/                         # Documentation and images
+│   └── images/
+├── build/                        # Build artifacts
+├── dist/                         # Distribution files
+└── requirements.txt              # Python dependencies
 ```
 
-3. Download the folder and save it on your computer
+## Data Format
 
-## Usage
-1. Run the Python script using the following command:
+Open-MSI accepts TOF-MS data in tab-separated text format (`.txt`):
+```
+time1   mass1   intensity1
+time2   mass2   intensity2
+...
+```
 
-    ```python ToFGui.py```
+Sample data files are available in the `examples/data/` directory.
 
-2. The application will open a file selection dialog. Choose the TOF-MS data file (.txt extention) that you want to convert.
+## Advanced Features
 
-3. Once the data file is loaded, the GUI will display the initial image. The ablation time, mass alignment value, and noise value sliders will be set to their default positions.
+### Visualization Techniques
+- **3D Visualization**: Explore data in three dimensions
+- **Heatmap Generation**: Create intensity-based color maps
+- **Overlay Analysis**: Compare multiple datasets
 
-4. Adjust the sliders and entry boxes for the ablation time, mass alignment value, and noise value to fine-tune the conversion parameters. The changes will be reflected in real-time on the displayed image.
+### Machine Learning
+- **K-means Clustering**: Automatic pattern detection
+- **PCA Analysis**: Dimensionality reduction and feature extraction
 
-5. The ablation time slider controls the length of each interval during data collection. Move the slider to the left or right to decrease or increase the ablation time, respectively. Alternatively, you can manually enter the desired value in the corresponding entry box.
+## Contributing
 
-6. The mass alignment value slider determines the mass alignment point for the conversion process. Adjust the slider or enter a value in the entry box to align the mass axis of the image. This helps to align the peaks of interest and improve the accuracy of the conversion.
+We welcome contributions! Please see our [contributing guidelines](CONTRIBUTING.md) for details.
 
-7. The noise value slider allows you to set the background noise level to subtract from the data. Move the slider or enter a value in the entry box to adjust the noise threshold. Subtracting the background noise enhances the signal-to-noise ratio and improves the clarity of the image.
+## License
 
-8. As you make adjustments to the conversion parameters, the image will be updated in real-time to reflect the changes. This allows you to visually assess the effect of parameter modifications on the image quality.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-9. To save the converted image, click the "Save Image" button. Choose a file name and location to save the image as a bitmap file (.bmp).
+## Citation
 
-10. To exit the application, click the "Exit" button or close the window.
+If you use Open-MSI in your research, please cite:
+```
+[Citation format to be added]
+```
 
+## Support
 
-## Conclusion
-The Time of Flight Mass Spectrometry Data to Image Conversion GUI provides an interactive tool for converting TOF-MS data into image format. By adjusting the conversion parameters, users can enhance the visual representation of the data, align the mass axis, and subtract background noise. The converted images can be saved for further analysis or displayed with a colorbar for improved interpretation.
+- **Issues**: Report bugs or request features on our [GitHub Issues](../../issues) page
+- **Documentation**: Find detailed guides in the [wiki](../../wiki)
+- **Discussions**: Join the community in [GitHub Discussions](../../discussions)
+
+## Acknowledgments
+
+- Built with Python, Tkinter, OpenCV, and scikit-learn
+- Special thanks to the mass spectrometry community for feedback and testing

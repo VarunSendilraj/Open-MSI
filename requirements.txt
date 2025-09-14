@@ -1,0 +1,19 @@
+# OPEN-MSI Dependencies
+# Core GUI and image processing
+tkinter
+Pillow>=8.0.0
+opencv-python>=4.5.0
+numpy>=1.20.0
+
+# Scientific computing and visualization
+matplotlib>=3.3.0
+plotly>=5.0.0
+ipywidgets>=7.6.0
+
+# Machine learning
+scikit-learn>=1.0.0
+
+# Development dependencies (optional)
+# pytest>=6.0.0
+# black>=21.0.0
+# flake8>=3.8.0
